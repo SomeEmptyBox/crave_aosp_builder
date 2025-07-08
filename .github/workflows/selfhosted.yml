@@ -520,13 +520,7 @@ jobs:
           # Clone local_manifests repository
           '$BUILD_DIFFERENT_ROM'
           '$LOCAL_MANIFEST'
-
-          # Sync the repositories
-          if [ -f /usr/bin/resync ]; then
-            /usr/bin/resync # For compatibility with Omansh's Docker image
-          else
-            /opt/crave/resync.sh
-          fi
+          /opt/crave/resync.sh
 
           # Set up build environment
           export BUILD_USERNAME=${{ github.actor }}
