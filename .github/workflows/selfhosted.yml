@@ -516,10 +516,10 @@ jobs:
           echo "Running build's log will show up here!"
 
 
-          crave ${{ secrets.CRAVE_FLAGS }} run --no-patch ${PAID} ${CLEAN} -- "rm -rf .repo/local_manifests ${{ github.event.inputs.REMOVALS }}
+          crave ${{ secrets.CRAVE_FLAGS }} run --no-patch ${PAID} ${CLEAN} -- 'rm -rf .repo/local_manifests ${{ github.event.inputs.REMOVALS }}
           # Clone local_manifests repository
-          $BUILD_DIFFERENT_ROM
-          $LOCAL_MANIFEST
+          '$BUILD_DIFFERENT_ROM'
+          '$LOCAL_MANIFEST'
 
           # Sync the repositories
           if [ -f /usr/bin/resync ]; then
@@ -537,10 +537,10 @@ jobs:
           echo "Run ID: ${{ github.run_id }}"
 
           # Build the ROM
-          $LUNCH
+          '$LUNCH'
           make installclean
           ${{ github.event.inputs.BUILD_COMMAND }}
-          "
+          '
         timeout-minutes: 1440
 
         # Send Build 'status' notification (Success)
