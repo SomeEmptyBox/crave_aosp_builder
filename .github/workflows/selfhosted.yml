@@ -32,6 +32,9 @@ on:
         description: "Command to initialize a different 'repo' project:"
         required: false
         default: "echo 'Build Starting!'"
+      SIGNING_KEYS_COMMAND:
+        description: "Command to clone singing keys, example: git clone https://${GH_TOKEN}@github.com/USERNAME/REPO path/to/clone"
+        required: false
       REMOVALS:
         description: "Folders to be removed before syncing:"
         required: false
@@ -463,7 +466,7 @@ jobs:
             cp crave.conf $PROJECTFOLDER
           fi
           if [[ -z "${{ secrets.CUSTOM_YAML }}" ]]; then
-            cp configs/crave/crave.yaml.aosp $PROJECTFOLDER/.repo/manifests/crave.yaml
+            envsubst < configs/crave/crave.yaml.aosp > $PROJECTFOLDER/.repo/manifests/crave.yaml
             echo "No Custom Configuration Found, Using Template!"
           else
             touch $PROJECTFOLDER/.repo/manifests/crave.yaml || true
@@ -473,6 +476,7 @@ jobs:
         env:
           CRAVE_USERNAME: ${{  secrets.CRAVE_USERNAME  }}
           CRAVE_TOKEN: ${{  secrets.CRAVE_TOKEN  }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
         # Initialize the previously choosen 'repo' project.
       - name: Set the 'crave' project
@@ -520,6 +524,7 @@ jobs:
           # Clone local_manifests repository
           '$BUILD_DIFFERENT_ROM'
           '$LOCAL_MANIFEST'
+          ${{ inputs.SIGNING_KEYS_COMMAND }}
           /opt/crave/resync.sh
 
           # Set up build environment
